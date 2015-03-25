@@ -101,7 +101,7 @@
                 android:layout_marginRight="10dp"
                 android:text="100"
                 android:textColor="#ffffffff"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 />
             <TextView
                 android:id="@+id/pm_quality"
@@ -115,36 +115,44 @@
                 android:textColor="#ffffffff"
                 android:textSize="25sp"
                 />
-            <TextView
-                android:id="@+id/city_name"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="北京"
-                android:textSize="50sp"
-                android:textColor="#ffffffff"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="25dp"
-                />
-            <TextView
-                android:id="@+id/real_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="今天18:25发布"
-                android:textSize="20sp"
-                android:textColor="#ffffffff"
-                android:layout_below="@id/city_name"
-                android:layout_marginLeft="25dp"
-                />
-            <TextView
-                android:id="@+id/real_humidity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="湿度:57%"
-                android:textSize="20sp"
-                android:textColor="#ffffffff"
-                android:layout_below="@id/real_time"
-                android:layout_marginLeft="25dp"
-                />
+                android:layout_marginLeft="25dp">
+                <TextView
+                    android:id="@+id/city_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="北京"
+                    android:textSize="50sp"
+                    android:textColor="#ffffffff"
+                    android:layout_marginTop="15dp"
+                    android:layout_centerHorizontal="true"
+
+                    />
+                <TextView
+                    android:id="@+id/real_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="今天18:25发布"
+                    android:textSize="20sp"
+                    android:textColor="#ffffffff"
+                    android:layout_below="@id/city_name"
+                    android:layout_centerHorizontal="true"
+                    />
+                <TextView
+                    android:id="@+id/real_humidity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="湿度:57%"
+                    android:textSize="20sp"
+                    android:textColor="#ffffffff"
+                    android:layout_below="@id/real_time"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    />
+                </RelativeLayout>
+
             </RelativeLayout>
         <!--今日天气信息-->
         <RelativeLayout
@@ -152,12 +160,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/content_row1"
-
             android:layout_gravity="left|center|bottom">
             <ImageView
                 android:id="@+id/weather_image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
                 android:src="@drawable/biz_plugin_weather_qing"
                 />
             <RelativeLayout

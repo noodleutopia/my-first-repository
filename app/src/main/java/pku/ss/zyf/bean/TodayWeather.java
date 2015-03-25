@@ -121,9 +121,7 @@ public class TodayWeather {
         this.date = date;
     }
 
-    public void setHigh(String high) {
-        this.high = high;
-    }
+    public void setHigh(String high) { this.high = high; }
 
     public void setLow(String low) {
         this.low = low;
