@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <!--标题栏-->
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="fill_parent"
@@ -65,10 +66,12 @@
         android:background="@drawable/biz_plugin_weather_shenzhen_bg"
         android:gravity="top"
         >
+        <!--城市信息-->
         <RelativeLayout
             android:id="@+id/content_row1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/face"
                 android:layout_width="70dp"
@@ -101,6 +104,7 @@
                 android:textSize="30sp"
                 />
             <TextView
+                android:id="@+id/pm_quality"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/face"
@@ -142,13 +146,14 @@
                 android:layout_marginLeft="25dp"
                 />
             </RelativeLayout>
+        <!--今日天气信息-->
         <RelativeLayout
             android:id="@+id/weather_detail_all"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/content_row1"
 
-            >
+            android:layout_gravity="left|center|bottom">
             <ImageView
                 android:id="@+id/weather_image"
                 android:layout_width="150dp"
@@ -157,14 +162,14 @@
                 />
             <RelativeLayout
                 android:id="@+id/weather_detail"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/weather_image"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
                 >
                 <TextView
                     android:id="@+id/date"
+                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="今天 星期四"
@@ -173,6 +178,7 @@
                     />
                 <TextView
                     android:id="@+id/temperature"
+                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date"
@@ -182,6 +188,7 @@
                     />
                 <TextView
                     android:id="@+id/weather_description"
+                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/temperature"
@@ -191,6 +198,7 @@
                     />
                 <TextView
                     android:id="@+id/weather_wind"
+                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/weather_description"
@@ -203,6 +211,7 @@
 
 
             </RelativeLayout>
+        <!--七日天气信息-->
         <RelativeLayout
             android:id="@+id/weather_3days"
             android:layout_width="fill_parent"
@@ -211,6 +220,7 @@
             >
 
             </RelativeLayout>
+        <!--广告信息等-->
 
 
     </RelativeLayout>

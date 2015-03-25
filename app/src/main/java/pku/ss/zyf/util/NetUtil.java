@@ -1,4 +1,4 @@
-package util;
+package pku.ss.zyf.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
