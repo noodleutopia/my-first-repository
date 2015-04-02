@@ -5,20 +5,30 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
+        android:name="pku.ss.zyf.app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         >
+        <!--主界面-->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--选择城市-->
+        <activity android:name=".SelectCity">
+
+        </activity>
+        <activity
+            android:name="pku.ss.zyf.myweatherforecast.NewActivity" >
+        </activity>
+
+
     </application>
 
 </manifest>

@@ -31,7 +31,7 @@
             android:layout_toRightOf="@id/city_seperator"
             android:gravity="center_vertical"
             android:paddingLeft="5dip"
-            android:text="北京天气"
+            android:text="天气预报"
             android:textColor="#ffffffff"
             android:textSize="22.0sp"
             />
@@ -181,17 +181,26 @@
                     android:layout_height="wrap_content"
                     android:text="今天 星期四"
                     android:textColor="#ffffffff"
-                    android:textSize="25sp"
+                    android:textSize="20sp"
                     />
+                <TextView
+                    android:id="@+id/current_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#ffffffff"
+                    android:text="5℃"
+                    android:textSize="30sp"/>
                 <TextView
                     android:id="@+id/temperature"
                     android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/date"
+                    android:layout_below="@id/current_temp"
                     android:text="-2℃～7℃"
                     android:textColor="#ffffffff"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     />
                 <TextView
                     android:id="@+id/weather_description"
@@ -201,7 +210,7 @@
                     android:layout_below="@id/temperature"
                     android:text="多云转晴"
                     android:textColor="#ffffffff"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     />
                 <TextView
                     android:id="@+id/weather_wind"
@@ -211,7 +220,7 @@
                     android:layout_below="@id/weather_description"
                     android:text="微风"
                     android:textColor="#ffffffff"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     />
 
                 </RelativeLayout>
@@ -220,7 +229,7 @@
             </RelativeLayout>
         <!--七日天气信息-->
         <RelativeLayout
-            android:id="@+id/weather_3days"
+            android:id="@+id/weather_7days"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_below="@id/weather_detail_all"

@@ -18,6 +18,7 @@ public class TodayWeather {
     private String high;
     private String low;
     private String type;
+//    private String currentTemp;
 
     @Override
     public String toString(){
@@ -85,6 +86,10 @@ public class TodayWeather {
         return type;
     }
 
+//    public String getCurrentTemp() {
+//        return currentTemp;
+//    }
+
     public void setCity(String city) {
         this.city = city;
     }
@@ -130,4 +135,8 @@ public class TodayWeather {
     public void setType(String type) {
         this.type = type;
     }
+
+//    public void setCurrentTemp(String currentTemp) {
+//        this.currentTemp = currentTemp;
+//    }
 }
