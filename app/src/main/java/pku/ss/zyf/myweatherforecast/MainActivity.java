@@ -62,6 +62,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+
+    }
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -115,7 +120,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     updateTodayWeather((TodayWeather) msg.obj);
                     break;
                 case UPDATE_FAIL:
-                    Toast.makeText(MainActivity.this,"获取数据失败！",Toast.LENGTH_SHORT);
+                    Toast.makeText(MainActivity.this,"获取数据失败！",Toast.LENGTH_SHORT).show();
                 default:
                     break;
             }
@@ -168,7 +173,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         humidityTv.setText("湿度: " + todayWeather.getShidu());
         pmDataTv.setText(pmData);
         pmQualityTv.setText(todayWeather.getQuality());
-        weekTv.setText(todayWeather.getDate().substring(0,3) + "  " +todayWeather.getDate().substring(3));
+        String date = todayWeather.getDate();
+        weekTv.setText(date.substring(0,date.indexOf("日")+1) + "  " +todayWeather.getDate().substring(date.indexOf("日")+1));
         temperatureTv.setText(todayWeather.getLow() + "〜" + todayWeather.getHigh());
         climateTv.setText(weatherDetail);
         windTv.setText("风力：" + todayWeather.getFengli());
@@ -189,6 +195,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
      * @param weatherDetail
      */
     private void alterImages(String pmData, String weatherDetail){
+        pmImg.setImageResource(R.drawable.biz_plugin_weather_0_50);
         if (pmData != null){
             int pmInt = Integer.parseInt(pmData);
             if (pmInt <= 50){
@@ -275,7 +282,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     /**
      * 解析XML文件函数(PULL方式)
      *
-     * @param xmlData
+     * @param xmlData xmlData
      * @return todayWeather
      */
     private TodayWeather parseXML(String xmlData) {
@@ -384,7 +391,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     /**
      * 解析json文件
      *
-     * @param jsonData
+     * @param jsonData jsonData
      * @return todayWeather
      */
     private TodayWeather parseXML2(String jsonData) {

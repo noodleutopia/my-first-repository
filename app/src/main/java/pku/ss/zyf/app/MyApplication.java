@@ -111,7 +111,7 @@ public class MyApplication extends Application{
         for (City city : mCityList){
             String cityName = city.getCity();
             String province = city.getProvince();
-            Log.d(TAG, province + " " + cityName);
+//            Log.d(TAG, province + " " + cityName);
         }
         return true;
     }
