@@ -160,6 +160,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/content_row1"
+            android:layout_marginTop="20dp"
             android:layout_gravity="left|center|bottom">
             <ImageView
                 android:id="@+id/weather_image"
@@ -232,8 +233,14 @@
             android:id="@+id/weather_7days"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:layout_marginTop="50dp"
             android:layout_below="@id/weather_detail_all"
             >
+            <android.support.v4.view.ViewPager
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/m_viwepager"
+                />
 
             </RelativeLayout>
         <!--广告信息等-->

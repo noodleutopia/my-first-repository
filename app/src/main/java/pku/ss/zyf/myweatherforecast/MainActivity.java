@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,12 +33,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import pku.ss.zyf.bean.TodayWeather;
+import pku.ss.zyf.bean.ViewPagerAdapter;
+import pku.ss.zyf.util.ImageUtils;
 import pku.ss.zyf.util.NetUtil;
 
 
@@ -49,6 +54,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv,
             pmQualityTv, temperatureTv, climateTv,
             windTv, currentTempTv;
+    private ViewPagerAdapter viewPagerAdapter;
+    private ViewPager viewPager;
+    private List<View> views;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,12 +165,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
         climateTv.setText("N/A");
         windTv.setText("N/A");
         currentTempTv.setText("N/A");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        views = new ArrayList<View>();
+        views.add(inflater.inflate(R.layout.m_3days_weather,viewPager));
+        views.add(inflater.inflate(R.layout.m_3days_weather_1,viewPager));
+        viewPagerAdapter = new ViewPagerAdapter(views, this);
+        viewPager = (ViewPager) findViewById(R.id.m_viwepager);
+        viewPager.setAdapter(viewPagerAdapter);
     }
 
     /**
      * 更新今日天气
      *
-     * @param todayWeather
+     * @param todayWeather todayWeather
      */
     private void updateTodayWeather(TodayWeather todayWeather) {
 //        Log.d("myUpdate",todayWeather.toString());
@@ -179,106 +195,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         climateTv.setText(weatherDetail);
         windTv.setText("风力：" + todayWeather.getFengli());
         currentTempTv.setText("当前:" + todayWeather.getWendu() + "℃");
-//        pmImg.setImageResource(R.drawable.biz_plugin_weather_201_300);
-//        weatherImg.setImageResource(R.drawable.biz_plugin_weather_baoxue);
+
         //更新图片
         if ((pmData != null) || (weatherDetail != null)){
-            alterImages(pmData, weatherDetail);
+//            alterImages(pmData, weatherDetail);
+            ImageUtils.alterImages(pmData, weatherDetail, pmImg,weatherImg);
         }
         Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * 更新图片显示
-     *
-     * @param pmData
-     * @param weatherDetail
-     */
-    private void alterImages(String pmData, String weatherDetail){
-        pmImg.setImageResource(R.drawable.biz_plugin_weather_0_50);
-        if (pmData != null){
-            int pmInt = Integer.parseInt(pmData);
-            if (pmInt <= 50){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_0_50);
-            }else if (pmInt <= 100){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_51_100);
-            }else if (pmInt <= 150){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_101_150);
-            }else if (pmInt <= 200){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_151_200);
-            }else if (pmInt <= 300){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_201_300);
-            }else {
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_greater_300);
-            }
-        }
-        if (weatherDetail != null){
-            switch (weatherDetail){
-                case "晴":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_qing);
-                    break;
-                case "多云":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_duoyun);
-                    break;
-                case "阴":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_yin);
-                    break;
-                case "小雨":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_xiaoyu);
-                    break;
-                case "中雨":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_zhongyu);
-                    break;
-                case "大雨":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_dayu);
-                    break;
-                case "雷阵雨":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_leizhenyu);
-                    break;
-                case "雷阵雨冰雹":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_leizhenyubingbao);
-                    break;
-                case "小雪":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_xiaoxue);
-                    break;
-                case "中雪":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_zhongxue);
-                    break;
-                case "大雪":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_daxue);
-                    break;
-                case "暴雪":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_baoxue);
-                    break;
-                case "阵雪":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_zhenxue);
-                    break;
-                case "雨夹雪":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_yujiaxue);
-                    break;
-                case "雾":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_wu);
-                    break;
-                case "特大暴雨":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_tedabaoyu);
-                    break;
-                case "沙尘暴":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_shachenbao);
-                    break;
-                case "阵雨":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_zhenyu);
-                    break;
-                case "暴雨":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_baoyu);
-                    break;
-                case "大暴雨":
-                    weatherImg.setImageResource(R.drawable.biz_plugin_weather_dabaoyu);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
     /**
      * 解析XML文件函数(PULL方式)
      *
@@ -463,7 +388,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     /**
      * 根据城市编号查询所对应的天气信息
      *
-     * @param cityCode
+     * @param cityCode cityCode
      */
     private void queryWeatherCode(String cityCode) {
         //    XML格式
@@ -493,7 +418,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             response.append(str);
                         }
                         String responseInfo = response.toString();
-                        if (responseInfo != null){
+                        if (!responseInfo.equals( "")){
                             Log.d("myWeather", responseInfo);
                         }
                         else{
