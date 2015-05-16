@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final int UPDATE_TODAY_WEATHER = 1;
     private static final int UPDATE_FAIL = 2;
+    private String cityCode;
     //定义控件对象
     private ImageView titleUpdateBtn, weatherImg, pmImg, mCitySelect;
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv,
@@ -57,6 +59,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ViewPagerAdapter viewPagerAdapter;
     private ViewPager viewPager;
     private List<View> views;
+    private ProgressBar pgb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +88,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         //选择城市后更新
         if ((requestCode == 1) && (resultCode == RESULT_OK)){
-            String cityCode = data.getStringExtra("cityNo");
+            cityCode = data.getStringExtra("cityNo");
             if (cityCode != null){
                 queryWeatherCode(cityCode);
+                pgb.setVisibility(View.VISIBLE);
+                titleUpdateBtn.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -97,15 +102,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.title_update_btn) {
+            titleUpdateBtn.setVisibility(View.INVISIBLE);
+            pgb.setVisibility(View.VISIBLE);
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
             //设置默认城市为“北京”
-            String cityCode = sharedPreferences.getString("main_city_code", "101010100");
+            cityCode = sharedPreferences.getString("main_city_code", "101010100");
             Log.d("myWeather", cityCode);
             int netState = NetUtil.getNetworkState(this);
             if (netState != NetUtil.NETWORK_NONE) {
                 Log.d("myWeather", "网络已连接,使用" + netState);
                 queryWeatherCode(cityCode);
             } else {
+                pgb.setVisibility(View.INVISIBLE);
+                titleUpdateBtn.setVisibility(View.VISIBLE);
                 Log.d("myWeather", "网络未连接");
                 Toast.makeText(MainActivity.this, "网络断开！", Toast.LENGTH_LONG).show();
             }
@@ -128,6 +137,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     updateTodayWeather((TodayWeather) msg.obj);
                     break;
                 case UPDATE_FAIL:
+                    pgb.setVisibility(View.INVISIBLE);
+                    titleUpdateBtn.setVisibility(View.VISIBLE);
                     Toast.makeText(MainActivity.this,"获取数据失败！",Toast.LENGTH_SHORT).show();
                 default:
                     break;
@@ -154,6 +165,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
         pmImg = (ImageView) findViewById(R.id.face);
         weatherImg = (ImageView) findViewById(R.id.weather_image);
+        pgb = (ProgressBar) findViewById(R.id.title_update_progress);
         mCitySelect.setOnClickListener(this);
         cityTv.setText("N/A");
         timeTv.setText("N/A");
@@ -167,7 +179,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         currentTempTv.setText("N/A");
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        views = new ArrayList<View>();
+        views = new ArrayList<>();
         views.add(inflater.inflate(R.layout.m_3days_weather,viewPager));
         views.add(inflater.inflate(R.layout.m_3days_weather_1,viewPager));
         viewPagerAdapter = new ViewPagerAdapter(views, this);
@@ -201,6 +213,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //            alterImages(pmData, weatherDetail);
             ImageUtils.alterImages(pmData, weatherDetail, pmImg,weatherImg);
         }
+        pgb.setVisibility(View.INVISIBLE);
+        titleUpdateBtn.setVisibility(View.VISIBLE);
         Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
     }
 
@@ -422,6 +436,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             Log.d("myWeather", responseInfo);
                         }
                         else{
+//                            mHandler.sendEmptyMessage(UPDATE_FAIL);
                             Log.d("myWeather", "获取网络数据失败！");
                         }
 
@@ -439,6 +454,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                     }
                 } catch (IOException e) {
+                    mHandler.sendEmptyMessage(UPDATE_FAIL);
                     e.printStackTrace();
                     Log.d("myWeather", "获取网络数据失败！！！");
 //                    Message msg = new Message();

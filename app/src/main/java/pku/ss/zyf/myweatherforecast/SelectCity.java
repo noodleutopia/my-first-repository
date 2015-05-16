@@ -5,22 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pku.ss.zyf.app.MyApplication;
 import pku.ss.zyf.bean.City;
+import pku.ss.zyf.bean.MyFilter;
 
 /**
  * User: ZhangYafei(261957725@qq.com)
@@ -30,11 +28,8 @@ import pku.ss.zyf.bean.City;
 public class SelectCity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener, TextWatcher {
 
     private List<City> cityList = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
-    private  List<String> cityNameList;
     private  ListView cityListView;
-    private SimpleAdapter simpleAdapter;
-    private List<Map<String, String>> cityMapList;
+    private MyFilter filterAdapter;
 
     @Override
     protected  void onCreate(Bundle saveInstanceState){
@@ -52,25 +47,12 @@ public class SelectCity extends Activity implements View.OnClickListener, Adapte
         cityListView.setOnItemClickListener(this);
         EditText searchEdit = (EditText) findViewById(R.id.search_edit);
         searchEdit.addTextChangedListener(this);
-        cityNameList = new ArrayList<>();
-        cityMapList = new ArrayList<Map<String, String>>();
 
         for (City city : myApp.getCityList()){
             cityList.add(city);
-            cityNameList.add(city.getProvince() + "-" + city.getCity());
-            Map<String, String> cityMap = new HashMap<String, String>();
-            cityMap.put("province", city.getProvince());
-            cityMap.put("city",city.getCity());
-            cityMap.put("cityNumber",city.getNumber());
-            cityMapList.add(cityMap);
         }
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, cityNameList);
-        String str[] = {"city","province"};
-        int id[] = {android.R.id.text1,android.R.id.text2};
-        simpleAdapter = new SimpleAdapter(this,cityMapList,android.R.layout.simple_list_item_2,str,id);
-//        cityListView.setAdapter(adapter);
-        cityListView.setAdapter(simpleAdapter);
+        filterAdapter = new MyFilter(this,cityList); //
+        cityListView.setAdapter(filterAdapter);
     }
     @Override
     public void onClick(View view) {
@@ -87,12 +69,7 @@ public class SelectCity extends Activity implements View.OnClickListener, Adapte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-//        String cityNumber = cityList.get(position).getNumber();
-        HashMap tempCityMap = (HashMap) simpleAdapter.getItem(position);
-
-        String cityNumber = (String) tempCityMap.get("cityNumber");
-
-//        Toast.makeText(this,cityNumber,Toast.LENGTH_SHORT).show();
+        String cityNumber = filterAdapter.getItem(position).getNumber();
         Intent intent = new Intent(this,MainActivity.class);
         intent.putExtra("cityNo",cityNumber);
         setResult(RESULT_OK,intent);
@@ -106,20 +83,19 @@ public class SelectCity extends Activity implements View.OnClickListener, Adapte
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-//        List<String> subCityNameList = new ArrayList<>();
-////        cityListView.getit
-//        for (String cityName : cityNameList){
-//            if (cityName.contains(s)){
-//                subCityNameList.add(cityName);
-//
-//            }
-//        }
-//        Log.d("MyAPP",subCityNameList.toString());
-//        cityListView.setAdapter(new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_2, subCityNameList));
 
-//        adapter.notifyDataSetChanged();
-        simpleAdapter.getFilter().filter(s);
+        String aa = s.toString();
+        Pattern p = Pattern.compile(aa);
+        List<City> resCityList = new ArrayList<>();
+        for(int i=0;i<cityList.size();i++){
+            City city = cityList.get(i);
+            Matcher matcher = p.matcher(city.getCity() + city.getProvince());
+            if(matcher.find()){
+                resCityList.add(city);
+            }
+        }
+        filterAdapter = new MyFilter(this, resCityList);
+        cityListView.setAdapter(filterAdapter);
     }
 
     @Override
