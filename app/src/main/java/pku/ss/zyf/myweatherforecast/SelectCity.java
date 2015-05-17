@@ -85,47 +85,52 @@ public class SelectCity extends Activity implements View.OnClickListener, Adapte
     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
         String aa = s.toString();
-        Pattern p;
-        List<City> resCityList = new ArrayList<>();
-        List<City> firstCityList = new ArrayList<>();   //首字匹配
-        List<City> secondCityList = new ArrayList<>();  //第二字匹配
-        List<City> thirdCityList = new ArrayList<>();   //第三字匹配
-        for(int i=0;i<cityList.size();i++){
-            City city = cityList.get(i);
-            p = Pattern.compile("^" + aa);
-            Matcher matcher = p.matcher(city.getCity());
-            if(matcher.find()){
-                firstCityList.add(city);
-            }else {
-                p = Pattern.compile("^/w{1}" + aa);
-                matcher = p.matcher(city.getCity());
-                if(matcher.find()){
-                    secondCityList.add(city);
-                }else{
-                    p = Pattern.compile("^/w{2}" + aa);
+        if (aa.length() > 0){
+            List<City> resCityList = new ArrayList<>();
+            Pattern p;
+            List<City> firstCityList = new ArrayList<>();   //首字匹配
+            List<City> secondCityList = new ArrayList<>();  //第二字匹配
+            List<City> thirdCityList = new ArrayList<>();   //第三字匹配
+            List<City> forthCityList = new ArrayList<>();   //第三字后匹配
+            for(int i=0;i<cityList.size();i++){
+                City city = cityList.get(i);
+                p = Pattern.compile(aa);
+                Matcher matcher = p.matcher(city.getCity());
+                if(matcher.find()) {
+                    p = Pattern.compile("^" + aa);
                     matcher = p.matcher(city.getCity());
-                    if(matcher.find()){
-                        thirdCityList.add(city);
-                    }
-                    else{
-                        p = Pattern.compile(aa);
+                    if (matcher.find()) {
+                        firstCityList.add(city);
+                    } else {
+                        p = Pattern.compile("^[\u4e00-\u9fa5]{1}" + aa);
                         matcher = p.matcher(city.getCity());
-                        if(matcher.find()){
-                            thirdCityList.add(city);
+                        if (matcher.find()) {
+                            secondCityList.add(city);
+                        } else {
+                            p = Pattern.compile("^[\u4e00-\u9fa5]{2}" + aa);
+                            matcher = p.matcher(city.getCity());
+                            if (matcher.find()) {
+                                thirdCityList.add(city);
+                            } else {
+                                forthCityList.add(city);
+                            }
                         }
                     }
                 }
-            }
-
-
-
-
+            }//endfor
+            resCityList.addAll(firstCityList);
+            resCityList.addAll(secondCityList);
+            resCityList.addAll(thirdCityList);
+            resCityList.addAll(forthCityList);
+            filterAdapter = new MyFilter(this, resCityList);
+            cityListView.setAdapter(filterAdapter);
         }
-        resCityList.addAll(firstCityList);
-        resCityList.addAll(secondCityList);
-        resCityList.addAll(thirdCityList);
-        filterAdapter = new MyFilter(this, resCityList);
-        cityListView.setAdapter(filterAdapter);
+        else {
+            filterAdapter = new MyFilter(this, cityList);
+            cityListView.setAdapter(filterAdapter);
+        }
+
+
     }
 
     @Override

@@ -106,7 +106,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             pgb.setVisibility(View.VISIBLE);
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
             //设置默认城市为“北京”
-            cityCode = sharedPreferences.getString("main_city_code", "101010100");
+            if (cityCode == null){
+                cityCode = sharedPreferences.getString("main_city_code", "101010100");
+            }
+
             Log.d("myWeather", cityCode);
             int netState = NetUtil.getNetworkState(this);
             if (netState != NetUtil.NETWORK_NONE) {
@@ -196,26 +199,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //        Log.d("myUpdate",todayWeather.toString());
         String pmData = todayWeather.getPm25();
         String weatherDetail = todayWeather.getType();
-        cityTv.setText(todayWeather.getCity());
-        timeTv.setText(todayWeather.getUpdatetime() + "发布");
-        humidityTv.setText("湿度: " + todayWeather.getShidu());
-        pmDataTv.setText(pmData);
-        pmQualityTv.setText(todayWeather.getQuality());
-        String date = todayWeather.getDate();
-        weekTv.setText(date.substring(0,date.indexOf("日")+1) + "  " +todayWeather.getDate().substring(date.indexOf("日")+1));
-        temperatureTv.setText(todayWeather.getLow() + "〜" + todayWeather.getHigh());
-        climateTv.setText(weatherDetail);
-        windTv.setText("风力：" + todayWeather.getFengli());
-        currentTempTv.setText("当前:" + todayWeather.getWendu() + "℃");
+        if (todayWeather.getDate() != null){
+            cityTv.setText(todayWeather.getCity());
+            timeTv.setText(todayWeather.getUpdatetime() + "发布");
+            humidityTv.setText("湿度: " + todayWeather.getShidu());
+            pmDataTv.setText(pmData);
+            pmQualityTv.setText(todayWeather.getQuality());
+            String date = todayWeather.getDate();
+            weekTv.setText(date.substring(0,date.indexOf("日")+1) + "  " +todayWeather.getDate().substring(date.indexOf("日")+1));
+            temperatureTv.setText(todayWeather.getLow() + "〜" + todayWeather.getHigh());
+            climateTv.setText(weatherDetail);
+            windTv.setText("风力：" + todayWeather.getFengli());
+            currentTempTv.setText("当前:" + todayWeather.getWendu() + "℃");
 
-        //更新图片
-        if ((pmData != null) || (weatherDetail != null)){
+            //更新图片
+            if ((pmData != null) || (weatherDetail != null)){
 //            alterImages(pmData, weatherDetail);
-            ImageUtils.alterImages(pmData, weatherDetail, pmImg,weatherImg);
+                ImageUtils.alterImages(pmData, weatherDetail, pmImg,weatherImg);
+            }
+            pgb.setVisibility(View.INVISIBLE);
+            titleUpdateBtn.setVisibility(View.VISIBLE);
+            Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
+        }else{
+            mHandler.sendEmptyMessage(UPDATE_FAIL);
         }
-        pgb.setVisibility(View.INVISIBLE);
-        titleUpdateBtn.setVisibility(View.VISIBLE);
-        Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
+
     }
 
     /**
