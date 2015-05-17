@@ -85,15 +85,45 @@ public class SelectCity extends Activity implements View.OnClickListener, Adapte
     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
         String aa = s.toString();
-        Pattern p = Pattern.compile(aa);
+        Pattern p;
         List<City> resCityList = new ArrayList<>();
+        List<City> firstCityList = new ArrayList<>();   //首字匹配
+        List<City> secondCityList = new ArrayList<>();  //第二字匹配
+        List<City> thirdCityList = new ArrayList<>();   //第三字匹配
         for(int i=0;i<cityList.size();i++){
             City city = cityList.get(i);
-            Matcher matcher = p.matcher(city.getCity() + city.getProvince());
+            p = Pattern.compile("^" + aa);
+            Matcher matcher = p.matcher(city.getCity());
             if(matcher.find()){
-                resCityList.add(city);
+                firstCityList.add(city);
+            }else {
+                p = Pattern.compile("^/w{1}" + aa);
+                matcher = p.matcher(city.getCity());
+                if(matcher.find()){
+                    secondCityList.add(city);
+                }else{
+                    p = Pattern.compile("^/w{2}" + aa);
+                    matcher = p.matcher(city.getCity());
+                    if(matcher.find()){
+                        thirdCityList.add(city);
+                    }
+                    else{
+                        p = Pattern.compile(aa);
+                        matcher = p.matcher(city.getCity());
+                        if(matcher.find()){
+                            thirdCityList.add(city);
+                        }
+                    }
+                }
             }
+
+
+
+
         }
+        resCityList.addAll(firstCityList);
+        resCityList.addAll(secondCityList);
+        resCityList.addAll(thirdCityList);
         filterAdapter = new MyFilter(this, resCityList);
         cityListView.setAdapter(filterAdapter);
     }
