@@ -102,7 +102,7 @@ public class SelectCity extends Activity implements View.OnClickListener, Adapte
                     if (matcher.find()) {
                         firstCityList.add(city);
                     } else {
-                        p = Pattern.compile("^[\u4e00-\u9fa5]{1}" + aa);
+                        p = Pattern.compile("^[\u4e00-\u9fa5]" + aa);
                         matcher = p.matcher(city.getCity());
                         if (matcher.find()) {
                             secondCityList.add(city);
