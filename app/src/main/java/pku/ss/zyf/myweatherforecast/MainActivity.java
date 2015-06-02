@@ -70,25 +70,111 @@ public class MainActivity extends Activity implements View.OnClickListener {
         titleUpdateBtn.setOnClickListener(this);
 
         initView();
+        if (savedInstanceState != null){
+            onBack(savedInstanceState);
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
+//        super.onSaveInstanceState(outState);
+
+        outState.putString("cityName", cityTv.getText().toString());
+        outState.putString("updateTime", timeTv.getText().toString());
+        outState.putString("humidity",humidityTv.getText().toString());
+        outState.putString("week", weekTv.getText().toString());
+        outState.putString("pmData", pmDataTv.getText().toString());
+        outState.putString("pmQuality", pmQualityTv.getText().toString());
+        outState.putString("temperature", temperatureTv.getText().toString());
+        outState.putString("climate", climateTv.getText().toString());
+        outState.putString("wind", windTv.getText().toString());
+        outState.putString("currentTemp", currentTempTv.getText().toString());
+
+    }
+
+    protected void onBack(Bundle savedInstanceState){
+        cityTv.setText(savedInstanceState.get("cityName").toString());
+        timeTv.setText(savedInstanceState.get("updateTime").toString());
+        humidityTv.setText(savedInstanceState.get("humidity").toString());
+        weekTv.setText(savedInstanceState.get("week").toString());
+        pmDataTv.setText(savedInstanceState.get("pmData").toString());
+        pmQualityTv.setText(savedInstanceState.get("pmQuality").toString());
+        temperatureTv.setText(savedInstanceState.get("temperature").toString());
+        climateTv.setText(savedInstanceState.get("climate").toString());
+        windTv.setText(savedInstanceState.get("wind").toString());
+        currentTempTv.setText(savedInstanceState.get("currentTemp").toString());
+    }
+
+    protected void onRestoreInstanceState(){
 
     }
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("TEST","onResume()!!!");
 
+        SharedPreferences mySharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+        if (mySharedPreferences.getBoolean("city_changed",false)){
+            cityTv.setText(mySharedPreferences.getString("cityName",""));
+            timeTv.setText(mySharedPreferences.getString("updateTime",""));
+            humidityTv.setText(mySharedPreferences.getString("humidity",""));
+            weekTv.setText(mySharedPreferences.getString("week",""));
+            pmDataTv.setText(mySharedPreferences.getString("pmData",""));
+            pmQualityTv.setText(mySharedPreferences.getString("pmQuality",""));
+            temperatureTv.setText(mySharedPreferences.getString("temperature",""));
+            climateTv.setText(mySharedPreferences.getString("climate",""));
+            windTv.setText(mySharedPreferences.getString("wind",""));
+            currentTempTv.setText(mySharedPreferences.getString("currentTemp",""));
+        }
+
+//        if (mySharedPreferences.getBoolean("city_not_changed", true)){
+//            String cityCode = mySharedPreferences.getString("now_city_code", "101010100");
+//            Log.d("TEST",cityCode);
+//            int netState = NetUtil.getNetworkState(this);
+//            if (netState != NetUtil.NETWORK_NONE) {
+//                Log.d("myWeather", "网络已连接,使用" + netState);
+//                queryWeatherCode(cityCode);
+//            } else {
+//                pgb.setVisibility(View.INVISIBLE);
+//                titleUpdateBtn.setVisibility(View.VISIBLE);
+//                Log.d("myWeather", "网络未连接");
+//                Toast.makeText(MainActivity.this, "网络断开！", Toast.LENGTH_LONG).show();
+//            }
+//        }
     }
 
     @Override
+    protected void onStop(){
+        super.onStop();
+        SharedPreferences sharedPreferences = getSharedPreferences("config",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("cityName", cityTv.getText().toString());
+        editor.putString("updateTime", timeTv.getText().toString());
+        editor.putString("humidity",humidityTv.getText().toString());
+        editor.putString("week", weekTv.getText().toString());
+        editor.putString("pmData", pmDataTv.getText().toString());
+        editor.putString("pmQuality", pmQualityTv.getText().toString());
+        editor.putString("temperature", temperatureTv.getText().toString());
+        editor.putString("climate", climateTv.getText().toString());
+        editor.putString("wind", windTv.getText().toString());
+        editor.putString("currentTemp", currentTempTv.getText().toString());
+        editor.commit();
+    }
+
+    /**
+     * 从选择城市界面回来，接收数据
+     * @param requestCode requestCode
+     * @param resultCode resultCode
+     * @param data data
+     */
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("TEST", "onActivityResult()!!!");
         //选择城市后更新
         if ((requestCode == 1) && (resultCode == RESULT_OK)){
             cityCode = data.getStringExtra("cityNo");
+            Log.d("TEST",cityCode);
             if (cityCode != null){
                 queryWeatherCode(cityCode);
                 pgb.setVisibility(View.VISIBLE);
@@ -412,7 +498,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
      *
      * @param cityCode cityCode
      */
-    private void queryWeatherCode(String cityCode) {
+    private void queryWeatherCode(final String cityCode) {
         //    XML格式
         final String address = "http://wthrcdn.etouch.cn/WeatherApi?citykey=" + cityCode;
         //    JSON格式
@@ -452,7 +538,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         TodayWeather todayWeather = parseXML(responseInfo);
 //                        TodayWeather todayWeather = parseXML2(responseInfo);
                         if (todayWeather != null) {
-//                            Log.d("myWeather",todayWeather.toString());
+                            Log.d("myWeather",todayWeather.toString());
+                            SharedPreferences sharedPreferences = getSharedPreferences("config",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("city_changed", true);
+                            editor.commit();
                             //发送消息，主线程更新UI
                             Message msg = new Message();
                             msg.what = UPDATE_TODAY_WEATHER;

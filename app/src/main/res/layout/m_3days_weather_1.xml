@@ -23,7 +23,7 @@
                 android:textSize="15sp"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:text="后天"/>
+                android:text="第四天"/>
             <ImageView
                 android:id="@+id/forth_day_img"
                 android:layout_below="@id/forth_day"
@@ -66,7 +66,7 @@
                 android:textSize="15sp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:text="后天"/>
+                android:text="第五天"/>
             <ImageView
                 android:id="@+id/fifth_day_img"
                 android:layout_below="@id/fifth_day"
@@ -109,7 +109,7 @@
                 android:textSize="15sp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:text="后天"/>
+                android:text="第六天"/>
             <ImageView
                 android:id="@+id/sixth_day_img"
                 android:layout_below="@id/sixth_day"

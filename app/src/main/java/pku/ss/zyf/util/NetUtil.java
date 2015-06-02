@@ -5,7 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- * Created by zyf on 2015/3/20.
+ * Created by Zhang Yafei on 2015/5/18.
+ * TIME:17:55
  */
 public class NetUtil {
     public static final int NETWORK_NONE = 0;

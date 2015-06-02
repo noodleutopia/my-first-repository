@@ -51,7 +51,7 @@ public class SelectCity extends Activity implements View.OnClickListener, Adapte
         for (City city : myApp.getCityList()){
             cityList.add(city);
         }
-        filterAdapter = new MyFilter(this,cityList); //
+        filterAdapter = new MyFilter(this,cityList);
         cityListView.setAdapter(filterAdapter);
     }
     @Override

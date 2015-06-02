@@ -16,17 +16,17 @@
             android:layout_gravity="center"
             >
             <TextView
-                android:id="@+id/tomorrow"
+                android:id="@+id/yesterday"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:text="后天"/>
+                android:text="昨天"/>
             <ImageView
                 android:id="@+id/tomorrow_img"
-                android:layout_below="@id/tomorrow"
+                android:layout_below="@id/yesterday"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
@@ -59,17 +59,17 @@
             android:layout_gravity="center"
             >
             <TextView
-                android:id="@+id/second_day"
+                android:id="@+id/today"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:text="后天"/>
+                android:text="今天"/>
             <ImageView
                 android:id="@+id/second_day_img"
-                android:layout_below="@id/second_day"
+                android:layout_below="@id/today"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
@@ -102,17 +102,17 @@
             android:layout_gravity="center"
             >
             <TextView
-                android:id="@+id/third_day"
+                android:id="@+id/tomorrow"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:text="后天"/>
+                android:text="明天"/>
             <ImageView
                 android:id="@+id/third_day_img"
-                android:layout_below="@id/third_day"
+                android:layout_below="@id/tomorrow"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
