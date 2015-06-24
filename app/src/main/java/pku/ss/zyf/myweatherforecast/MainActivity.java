@@ -125,6 +125,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             climateTv.setText(mySharedPreferences.getString("climate",""));
             windTv.setText(mySharedPreferences.getString("wind",""));
             currentTempTv.setText(mySharedPreferences.getString("currentTemp",""));
+            if(cityCode == null || cityCode == ""){
+                cityCode = mySharedPreferences.getString("cityCode","");
+            }
+            Log.d("TEST","The cityCode is :" + cityCode);
         }
 
 //        if (mySharedPreferences.getBoolean("city_not_changed", true)){
@@ -158,6 +162,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         editor.putString("climate", climateTv.getText().toString());
         editor.putString("wind", windTv.getText().toString());
         editor.putString("currentTemp", currentTempTv.getText().toString());
+        editor.putString("cityCode", this.cityCode);
+        Log.d("TEST", "Saved cityCode is : " + cityCode);
         editor.commit();
     }
 

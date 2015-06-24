@@ -40,4 +40,6 @@ public class ViewPagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView(views.get(position));
     }
+
+
 }
